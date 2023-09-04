@@ -3,18 +3,6 @@ import { useState } from "react";
 import "./DatePicker"
 import TimeFunc from "./DatePicker";
 
-function CustomTimeFunc() {
-  const [customTime, setCustomTime] = useState('');
-
-  const handleCustomTime = (e) => {
-    setCustomTime(e.target.value)
-  }
-
-  return (
-    <input type="date" name="custom-time" id="custom-time"/>
-  )
-}
-
 function App() {
 
   return (
