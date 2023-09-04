@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+
+body {
+  background-color: rgb(16, 16, 16) !important;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: 'Raleway' !important;
+  user-select: none !important;
+}
+
+.main h1 {
+  position: relative;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2990ff 0%, #cc00ff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.main {
+  background: url(/public/main-bg.svg);
+  background-repeat: round;
+  height: 25vh;
+}
