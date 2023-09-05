@@ -1,117 +1,67 @@
 import "./App.css";
-import { useState } from "react";
-import "./DatePicker"
+import "./DatePicker";
 import TimeFunc from "./DatePicker";
 
 function App() {
-
   return (
     <>
-      <div
-        className="container-fluid d-flex justify-content-center align-items-center main">
-        <h1 className="text-center">
-          Custom Discord Status Maker By CinarKK
-        </h1>
+      <div className="container-fluid d-flex justify-content-center align-items-center main">
+        <h1 className="text-center">Custom Discord Status Maker By CinarKK</h1>
       </div>
-      <div className="container container-fluid d-flex justify-content-start align-items-center h-auto mt-5 flex-row">
-        <form className="rounded">
-          <h3 className="form-label text-light">Set Custom Status</h3>
-          <div className="row">
-            <div className="col">
-              <div className="form-floating mb-4">
-                <input
-                  type="text"
-                  name="dc-token"
-                  id="dc-token"
-                  className="form-control"
-                  placeholder="Discord token"
-                  autoComplete="off"
+      <div className="container-fluid mt-5 d-flex justify-content-evenly flex-row fi-cont">
+        
+        <div className="status-preview d-grid">
+          <img src={require("./images/dc-profile.png")} alt="dc-profile" />
+        </div>
+      </div>
+      <div className="footer container-fluid d-flex mt-5 justify-content-around">
+        <div className="row">
+          <div className="col">
+            <button
+              className="btn-socials d-flex align-items-center gap-2"
+            >
+              <a
+                href="https://github.com/CinarKK9/custom-discord-status-maker"
+                target="_blank"
+                rel="noreferrer"
+                className="gap-3"
+              >
+                <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fillRule="evenodd"
+                    clipRule="evenodd"
+                    d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                    fill="#24292f"
+                  />
+                </svg>
+                <span>GitHub</span>
+              </a>
+            </button>
+          </div>
+          <div className="col">
+            <button
+              className="btn-socials d-flex align-items-center gap-2"
+              style={{ backgroundColor: "#5865F2" }}
+            >
+              <a
+                href="https://discord.com/invite/xrsMbq8P7u"
+                target="_blank"
+                rel="noreferrer"
+                className="gap-3"
+              >
+                <img
+                  src={require("./images/discord-logo.png")}
+                  alt="dc-logo"
+                  style={{ height: "96px" }}
                 />
-                <label htmlFor="dc-token">Discord User Token</label>
-              </div>
-            </div>
+                <span style={{ color: "#fff" }}>Discord</span>
+              </a>
+            </button>
           </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-floating mb-4">
-                <input
-                  type="text"
-                  name="activity-details"
-                  id="activity-details"
-                  className="form-control"
-                  placeholder="Activity Details"
-                  autoComplete="off"
-                />
-                <label htmlFor="activity-details">Activity Details</label>
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-floating mb-4">
-                <input
-                  type="text"
-                  name="activity-state"
-                  id="activity-state"
-                  className="form-control"
-                  placeholder="Activity State"
-                  autoComplete="off"
-                />
-                <label htmlFor="activity-state">Activity State</label>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-floating mb-4">
-                <input
-                  type="text"
-                  name="button-text"
-                  id="button-text"
-                  className="form-control"
-                  placeholder="Button Text"
-                  autoComplete="off"
-                />
-                <label htmlFor="button-text">Button Text</label>
-              </div>
-            </div>
-            <div className="col">
-              <div className="form-floating mb-4">
-                <input
-                  type="text"
-                  name="button-url"
-                  id="button-url"
-                  className="form-control"
-                  placeholder="Button Text"
-                  autoComplete="off"
-                />
-                <label htmlFor="button-url">Button Url</label>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-              <div className="col text-center mb-2">
-                <span className="form-text text-light">
-                  Select 'Custom Time' To Enable Date Picker
-                </span>
-              </div>
-          </div>
-          <div className="row">
-              {
-                TimeFunc()
-              }              
-          </div>
-          <div className="row">
-            <div className="col">
-              <button type="submit" className="btn w-25 sm-btn">
-                Set Status
-              </button>
-            </div>
-          </div>
-        </form>
+        </div>
       </div>
     </>
   );
 }
-
-
 
 export default App;
