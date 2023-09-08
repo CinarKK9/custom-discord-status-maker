@@ -7,9 +7,12 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false
-    }
+    },
+    resizable: false,
   })
   mainWindow.loadURL(`${app.getAppPath()}\\build\\index.html`);
+
+  mainWindow.removeMenu()
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);

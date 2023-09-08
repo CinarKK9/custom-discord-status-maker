@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
 
 :root {
   --main-grad: linear-gradient(135deg, #2990ff 0%, #cc00ff 100%);
@@ -9,22 +10,17 @@ body {
   height: 100vh;
   margin: 0;
   padding: 0;
-  font-family: 'Raleway' !important;
+  font-family: 'Poppins' !important;
   user-select: none !important;
   background: url(/public/main-bg.svg) no-repeat fixed;
 }
 
 .main h1 {
-  position: relative;
   font-weight: 700;
   background: var(--main-grad);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-
-.main {
-  height: 25vh;
 }
 
 .sm-btn span {
@@ -57,22 +53,15 @@ body {
   background-color: transparent;
 }
 
-.status-preview {
-  place-items: center;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.status-preview img {
-  max-width: 250px;
-}
-
 .btn-socials {
+  width: 18rem;
   font-weight: 700;
   transition: .3s !important;
   padding: 7px !important;
   border-radius: 7px !important;
   border: none !important;
+  margin-bottom: 2rem;
+  justify-content: space-evenly;
 }
 
 .btn-socials a {
@@ -89,6 +78,96 @@ body {
 
 .btn-socials span {
   font-size: 32px !important;
+}
+
+.profile-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile {
+  position: relative;
+  background-color: #111214;
+  width: 50%;
+  height: 70%;
+}
+
+.profile-banner {
+  width: 100%;
+  height: 20%;
+  background-color: #5865F2;
+}
+
+.avatar-container {
+  border: 7px solid #111214;
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  border-radius: 50%;
+  width: 8rem;
+  height: 8rem;
+}
+
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  background: url(https://cdn.discordapp.com/avatars/947417877680644106/a_450f584f803d27cb5442f479b489f5c3.png);
+}
+
+.status {
+  position: absolute;
+  background-color: #23A559;
+  border-radius: 50%;
+  width: 18%;
+  height: 18%;
+  bottom: 6px;
+  right: 5px;
+}
+
+.userinfo {
+  font-weight: bold;
+  padding: 80px 80px 20px 20px;
+  width: 100%;
+  height: 23%;
+}
+
+.userinfo span {
+  color: #fff;
+  font-size: 32px;
+}
+
+.activity {
+  padding: 20px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.activity-type {
+  font-size: 14px;
+  font-weight: bold;
+  color: #b5bac1;
+}
+
+.activity-details {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.activity-details img {
+  max-width: 25%;
+}
+
+.activity-info {
+  color: #fff;
+  margin-left: 16px;
 }
 
 @media screen and (max-width: 800px) {
