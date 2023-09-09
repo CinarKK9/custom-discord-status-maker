@@ -12,8 +12,6 @@ function createWindow () {
   })
   mainWindow.loadURL(`${app.getAppPath()}\\build\\index.html`);
 
-  mainWindow.removeMenu()
-
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
     return { action: 'deny' };

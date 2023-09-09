@@ -1,25 +1,129 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import * as discord from "discord-rpc";
+import * as times from "./times";
 
-let Data = {
-  xAppId: "asd",
-  xState: "asd",
-  xDetails: "asd",
-  xTime: "asd",
-  xTimeUntil: "",
-  xLargeImageKey: "",
-  xLargeImageText: "",
-  xSmallImageKey: "",
-  xSmallImageText: "",
-  xButtonText: "",
-  xButtonLink: "",
-};
+const rpc = new discord.Client({ transport: "ipc" });
 
 function Form() {
+  const [formData, setFormData] = useState({
+    appId: "",
+    state: "",
+    details: "",
+    time: "default", // Set a default value for time
+    untilTime: 0,
+    lgImgKey: "",
+    lgImgTxt: "",
+    smImgKey: "",
+    smImgTxt: "",
+    btnTxt: "",
+    btnLink: "",
+  });
+
+  // Handle changes for text inputs
+  const handleTextChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle changes for radio buttons
+  const handleRadioChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  // Handle changes for the custom-time input
+  const handleCustomTimeChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: parseInt(value), // Parse the input as an integer
+    });
+  };
+
+  useEffect(() => {
+    const dclientId = formData.appId;
+    rpc.login({ clientId: dclientId });
+  }, [formData.appId]);
+  
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    switch (formData.time) {
+      case "none":
+        formData.time = null;
+        break;
+  
+      case "local":
+        formData.time = times.localTime();
+        break;
+  
+      case "custom":
+        formData.time = formData.untilTime;
+        break;
+  
+      default:
+        formData.time = new Date();
+        break;
+    }
+    rpc.on('ready', () => {
+      console.log("custom status maker by cinarkk");
+      try {
+        rpc.setActivity({
+          state: formData.state,
+          details: formData.details,
+          startTimestamp: formData.time,
+          endTimestamp: formData.untilTime,
+          largeImageKey: formData.lgImgKey,
+          largeImageText: formData.lgImgTxt,
+          smallImageKey: formData.smImgKey,
+          smallImageText: formData.smImgTxt,
+          buttons: [
+            {
+              label: formData.btnTxt,
+              url: formData.btnLink,
+            },
+            {
+              label: "Get Custom RPC By CinarKK",
+              url: "https://github.com/CinarKK9/custom-discord-status-maker.git",
+            },
+          ],
+        });
+      } catch (error) {
+        let errs = document.createElement("p")
+        errs.innerHTML(`There Was an Error Setting Status ${error}`)
+      }
+    });
+
+    // Clear the form after submission
+    setFormData({
+      appId: "",
+      state: "",
+      details: "",
+      time: "default",
+      untilTime: 0,
+      lgImgKey: "",
+      lgImgTxt: "",
+      smImgKey: "",
+      smImgTxt: "",
+      btnTxt: "",
+      btnLink: "",
+    });
+  };
+
   return (
     <>
       <div className="row">
         <div className="col">
           <form
+            onSubmit={handleSubmit}
+            method="post"
             style={{
               userSelect: "text",
               color: "#fff",
@@ -34,6 +138,8 @@ function Form() {
                   application id
                 </label>
                 <input
+                  value={formData.appId}
+                  onChange={handleTextChange}
                   type="text"
                   name="app-id"
                   id="app-id"
@@ -47,6 +153,8 @@ function Form() {
                   State
                 </label>
                 <input
+                  value={formData.state}
+                  onChange={handleTextChange}
                   type="text"
                   name="state"
                   id="state"
@@ -58,6 +166,8 @@ function Form() {
                   Details
                 </label>
                 <input
+                  value={formData.details}
+                  onChange={handleTextChange}
                   type="text"
                   name="details"
                   id="details"
@@ -70,16 +180,21 @@ function Form() {
                 <input
                   type="radio"
                   name="time"
-                  id="none"
+                  value="none"
+                  onChange={handleRadioChange}
+                  checked={formData.time === "none"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
                   None
                 </label>
                 <input
+                  defaultChecked
                   type="radio"
                   name="time"
-                  id="default"
+                  value="default"
+                  onChange={handleRadioChange}
+                  checked={formData.time === "default"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
@@ -88,7 +203,9 @@ function Form() {
                 <input
                   type="radio"
                   name="time"
-                  id="local"
+                  value="local"
+                  onChange={handleRadioChange}
+                  checked={formData.time === "local"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
@@ -97,7 +214,9 @@ function Form() {
                 <input
                   type="radio"
                   name="time"
-                  id="custom"
+                  value="custom"
+                  onChange={handleRadioChange}
+                  checked={formData.time === "custom"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
@@ -108,6 +227,8 @@ function Form() {
                 <input
                   type="text"
                   name="custom-time"
+                  onChange={handleCustomTimeChange}
+                  value={formData.untilTime}
                   id="custom-time"
                   className="form-control"
                   placeholder="ENTER UNIX TIME (UNTIL TIME)"
@@ -121,6 +242,8 @@ function Form() {
                 </label>
                 <input
                   type="text"
+                  value={formData.lgImgKey}
+                  onChange={handleTextChange}
                   name="large-img-key"
                   id="large-img-key"
                   className="form-control"
@@ -132,6 +255,8 @@ function Form() {
                 </label>
                 <input
                   type="text"
+                  value={formData.lgImgTxt}
+                  onChange={handleTextChange}
                   name="large-img-text"
                   id="large-img-text"
                   className="form-control"
@@ -145,6 +270,8 @@ function Form() {
                 </label>
                 <input
                   type="key"
+                  value={formData.smImgKey}
+                  onChange={handleTextChange}
                   name="small-img-key"
                   id="small-img-key"
                   className="form-control"
@@ -156,6 +283,8 @@ function Form() {
                 </label>
                 <input
                   type="text"
+                  value={formData.smImgTxt}
+                  onChange={handleTextChange}
                   name="small-img-text"
                   id="small-img-text"
                   className="form-control"
@@ -169,6 +298,8 @@ function Form() {
                 </label>
                 <input
                   type="text"
+                  value={formData.btnTxt}
+                  onChange={handleTextChange}
                   name="button1-text"
                   id="button1-text"
                   className="form-control"
@@ -180,6 +311,8 @@ function Form() {
                 </label>
                 <input
                   type="text"
+                  value={formData.btnLink}
+                  onChange={handleTextChange}
                   name="button-link"
                   id="button-link"
                   className="form-control"
@@ -187,7 +320,7 @@ function Form() {
               </div>
             </div>
             <button type="submit" className="sm-btn rounded">
-              <span>SET STATUS</span>
+              <span>Set Status</span>
             </button>
           </form>
         </div>
@@ -231,5 +364,4 @@ function Form() {
   );
 }
 
-export { Data };
 export default Form;
