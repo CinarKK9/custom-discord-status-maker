@@ -1,145 +1,49 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import * as discord from "discord-rpc";
 import * as times from "./times";
+import swal from "sweetalert"
+import { Client } from 'discord-rpc'
 
 const rpc = new discord.Client({ transport: "ipc" });
 
 function Form() {
-  const [formData, setFormData] = useState({
-    appId: "",
-    state: "",
-    details: "",
-    time: "default", // Set a default value for time
-    untilTime: 0,
-    lgImgKey: "",
-    lgImgTxt: "",
-    smImgKey: "",
-    smImgTxt: "",
-    btnTxt: "",
-    btnLink: "",
-  });
+  const [appId, setAppId] = useState('');
+  const [state, setState] = useState('');
+  const [deatils, setDetails] = useState('');
+  const [largeImageKey, setLargeImageKey] = useState('');
+  const [largeImageText, setLargeImageText] = useState('');
 
-  // Handle changes for text inputs
-  const handleTextChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  const [smallImageKey, setSmallImageKey] = useState('');
+  const [smallImageText, setSmallImageText] = useState('');
+  const [buttonText, setButtonText] = useState('');
+  const [buttonLink, setButtonLink] = useState('');
+  const [time, setTime] = useState('')
 
-  // Handle changes for radio buttons
-  const handleRadioChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Handle changes for the custom-time input
-  const handleCustomTimeChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: parseInt(value), // Parse the input as an integer
-    });
-  };
-
-  useEffect(() => {
-    const dclientId = formData.appId;
-    rpc.login({ clientId: dclientId });
-  }, [formData.appId]);
-  
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    switch (formData.time) {
-      case "none":
-        formData.time = null;
-        break;
-  
-      case "local":
-        formData.time = times.localTime();
-        break;
-  
-      case "custom":
-        formData.time = formData.untilTime;
-        break;
-  
-      default:
-        formData.time = new Date();
-        break;
-    }
-    rpc.on('ready', () => {
-      console.log("custom status maker by cinarkk");
-      try {
-        rpc.setActivity({
-          state: formData.state,
-          details: formData.details,
-          startTimestamp: formData.time,
-          endTimestamp: formData.untilTime,
-          largeImageKey: formData.lgImgKey,
-          largeImageText: formData.lgImgTxt,
-          smallImageKey: formData.smImgKey,
-          smallImageText: formData.smImgTxt,
-          buttons: [
-            {
-              label: formData.btnTxt,
-              url: formData.btnLink,
-            },
-            {
-              label: "Get Custom RPC By CinarKK",
-              url: "https://github.com/CinarKK9/custom-discord-status-maker.git",
-            },
-          ],
-        });
-      } catch (error) {
-        let errs = document.createElement("p")
-        errs.innerHTML(`There Was an Error Setting Status ${error}`)
-      }
-    });
-
-    // Clear the form after submission
-    setFormData({
-      appId: "",
-      state: "",
-      details: "",
-      time: "default",
-      untilTime: 0,
-      lgImgKey: "",
-      lgImgTxt: "",
-      smImgKey: "",
-      smImgTxt: "",
-      btnTxt: "",
-      btnLink: "",
-    });
-  };
+  const activitySettings = {
+    appId: appId,
+    state: state,
+    details: deatils,
+    largeImageKey: largeImageKey,
+    largeImageText: largeImageText,
+    smallImageKey: smallImageKey,
+    smallImageText: smallImageText,
+    buttonLink: buttonLink,
+    buttonText: buttonText,
+    time: time
+  }
 
   return (
     <>
       <div className="row">
         <div className="col">
-          <form
-            onSubmit={handleSubmit}
-            method="post"
-            style={{
-              userSelect: "text",
-              color: "#fff",
-              fontSize: "14px",
-              textTransform: "uppercase",
-              fontFamily: "Rubik",
-            }}
-          >
             <div className="row mb-3">
               <div className="col">
                 <label htmlFor="app-id" className="form-label">
                   application id
                 </label>
                 <input
-                  value={formData.appId}
-                  onChange={handleTextChange}
+                  value={appId}
+                  onChange={e => setAppId(e.target.value)}
                   type="text"
                   name="app-id"
                   id="app-id"
@@ -153,8 +57,8 @@ function Form() {
                   State
                 </label>
                 <input
-                  value={formData.state}
-                  onChange={handleTextChange}
+                  value={state}
+                  onChange={e => setState(e.target.value)}
                   type="text"
                   name="state"
                   id="state"
@@ -166,8 +70,8 @@ function Form() {
                   Details
                 </label>
                 <input
-                  value={formData.details}
-                  onChange={handleTextChange}
+                  value={deatils}
+                  onChange={e => setDetails(e.target.value)}
                   type="text"
                   name="details"
                   id="details"
@@ -178,61 +82,36 @@ function Form() {
             <div className="row mb-4">
               <div className="col d-flex align-items-center">
                 <input
+                  value={null}
+                  checked={e => setTime(e.target.value)}
                   type="radio"
                   name="time"
-                  value="none"
-                  onChange={handleRadioChange}
-                  checked={formData.time === "none"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
                   None
                 </label>
                 <input
+                  value={new Date()}
                   defaultChecked
+                  checked={e => setTime(e.target.value)}
                   type="radio"
                   name="time"
-                  value="default"
-                  onChange={handleRadioChange}
-                  checked={formData.time === "default"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
                   default
                 </label>
                 <input
+                  value={times.localTime}
                   type="radio"
+                  checked={e => setTime(e.target.value)}
                   name="time"
-                  value="local"
-                  onChange={handleRadioChange}
-                  checked={formData.time === "local"}
                   className="form-check-input mx-1"
                 />
                 <label htmlFor="time" className="me-3">
                   local time
                 </label>
-                <input
-                  type="radio"
-                  name="time"
-                  value="custom"
-                  onChange={handleRadioChange}
-                  checked={formData.time === "custom"}
-                  className="form-check-input mx-1"
-                />
-                <label htmlFor="time" className="me-3">
-                  until
-                </label>
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  name="custom-time"
-                  onChange={handleCustomTimeChange}
-                  value={formData.untilTime}
-                  id="custom-time"
-                  className="form-control"
-                  placeholder="ENTER UNIX TIME (UNTIL TIME)"
-                />
               </div>
             </div>
             <div className="row mb-4">
@@ -241,9 +120,9 @@ function Form() {
                   large image key
                 </label>
                 <input
+                  value={largeImageKey}
+                  onChange={e => setLargeImageKey(e.target.value)}
                   type="text"
-                  value={formData.lgImgKey}
-                  onChange={handleTextChange}
                   name="large-img-key"
                   id="large-img-key"
                   className="form-control"
@@ -254,9 +133,9 @@ function Form() {
                   large image text
                 </label>
                 <input
+                  value={largeImageText}
+                  onChange={e => setLargeImageText(e.target.value)}
                   type="text"
-                  value={formData.lgImgTxt}
-                  onChange={handleTextChange}
                   name="large-img-text"
                   id="large-img-text"
                   className="form-control"
@@ -269,9 +148,9 @@ function Form() {
                   small image key
                 </label>
                 <input
+                  value={smallImageKey}
+                  onChange={e => setSmallImageKey(e.target.value)}
                   type="key"
-                  value={formData.smImgKey}
-                  onChange={handleTextChange}
                   name="small-img-key"
                   id="small-img-key"
                   className="form-control"
@@ -282,9 +161,9 @@ function Form() {
                   small image text
                 </label>
                 <input
+                  value={smallImageText}
+                  onChange={e => setSmallImageText(e.target.value)}
                   type="text"
-                  value={formData.smImgTxt}
-                  onChange={handleTextChange}
                   name="small-img-text"
                   id="small-img-text"
                   className="form-control"
@@ -297,9 +176,9 @@ function Form() {
                   button text
                 </label>
                 <input
+                  value={buttonText}
+                  onChange={setButtonText}
                   type="text"
-                  value={formData.btnTxt}
-                  onChange={handleTextChange}
                   name="button1-text"
                   id="button1-text"
                   className="form-control"
@@ -310,19 +189,18 @@ function Form() {
                   button link
                 </label>
                 <input
+                  value={buttonLink}
+                  onChange={e => setButtonLink(e.target.value)}
                   type="text"
-                  value={formData.btnLink}
-                  onChange={handleTextChange}
                   name="button-link"
                   id="button-link"
                   className="form-control"
                 />
               </div>
             </div>
-            <button type="submit" className="sm-btn rounded">
+            <button onClick={setStatus} className="sm-btn rounded">
               <span>Set Status</span>
             </button>
-          </form>
         </div>
         <div className="col">
           <div className="profile-container">
@@ -362,6 +240,34 @@ function Form() {
       </div>
     </>
   );
+
+function setStatus() {
+    const client = new Client({transport: 'ipc'})
+    client.setActivity({
+      state: state,
+      details: deatils,
+      startTimestamp: time,
+      largeImageKey: largeImageKey,
+      smallImageKey: smallImageKey,
+      largeImageText: largeImageText,
+      smallImageText: smallImageText,
+      buttons: [
+        {
+          label: buttonText,
+          url: buttonLink,
+        },
+        {
+          label: 'Made By CinarKK',
+          url: 'https://github.com/CinarKK9'
+        }
+      ]
+    }).then((result) => {
+      swal({title: 'Activity Set', text:'Activity was set successfully', closeOnClickOutside: true, closeOnEsc: true, icon: 'success'})
+    }).catch((err) => {
+      swal({title: 'Error', text: `Error Setting Activity ${err}`})
+    });
+}
+
 }
 
 export default Form;

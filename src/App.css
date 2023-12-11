@@ -72,6 +72,12 @@ body {
   text-decoration: none;
 }
 
+div label {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
 .btn-socials:hover {
   opacity: .7 !important;
 }
