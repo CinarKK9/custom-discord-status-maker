@@ -243,6 +243,7 @@ function Form() {
 
 function setStatus() {
     const client = new Client({transport: 'ipc'})
+    client.login(appId)
     client.setActivity({
       state: state,
       details: deatils,
