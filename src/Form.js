@@ -177,7 +177,7 @@ function Form() {
                 </label>
                 <input
                   value={buttonText}
-                  onChange={setButtonText}
+                  onChange={e => setButtonText(e.target.value)}
                   type="text"
                   name="button1-text"
                   id="button1-text"
